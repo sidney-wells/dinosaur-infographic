@@ -9,13 +9,13 @@ function Dino(species, weight, height, diet, where, when, fact) {
   this.fact = fact;
   this.whenFact = function whenFact() {
     return `The ${this.species} was alive during ${this.when}`;
-  }
+  };
   this.whereFact = function whereFact() {
     return `The ${this.species} lived in ${this.where}`;
-  }
+  };
   this.aFact = function aFact() {
     return `${this.fact}`;
-  }
+  };
 }
 
 // Create Dino Objects
