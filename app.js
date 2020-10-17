@@ -7,6 +7,15 @@ function Dino(species, weight, height, diet, where, when, fact) {
   this.where = where;
   this.when = when;
   this.fact = fact;
+  this.whenFact = function whenFact() {
+    return `The ${this.species} was alive during ${this.when}`;
+  }
+  this.whereFact = function whereFact() {
+    return `The ${this.species} lived in ${this.where}`;
+  }
+  this.aFact = function aFact() {
+    return `${this.fact}`;
+  }
 }
 
 // Create Dino Objects
@@ -44,20 +53,17 @@ const getHumanData = () => {
   return new Human(input[0], height, input[3], input[4]);
 };
 
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
+// Create Dino Compare Method 1 - Weight
 const compareWeight = (dino, human) => {
-  return `${human.name} weighs ${human.weight} and ${dino.species} weighs ${dino.weight}.`;
+  return `${human.name} weighs ${human.weight} lbs and ${dino.species} weighs ${dino.weight} lbs.`;
 };
 
-// Create Dino Compare Method 2
-// NOTE: Height in JSON file.
+// Create Dino Compare Method 2 - Height
 const compareHeight = (dino, human) => {
   return `${dino.species} is ${dino.height} inches but ${human.name} is ${human.height} inches.`;
 };
 
-// Create Dino Compare Method 3
-// NOTE: Diet in JSON file.
+// Create Dino Compare Method 3 - Diet
 const compareDiet = (dino, human) => {
   return `${human.name} is a ${human.diet} while ${dino.species} is a ${dino.diet}.`;
 };
@@ -79,6 +85,15 @@ function getComparisonFunction(num, dino, human) {
     case 2: {
       return compareDiet(dino, human);
     }
+    case 3: {
+      return dino.whenFact();
+    }
+    case 4: {
+      return dino.whereFact();
+    }
+    case 5: {
+      return dino.aFact();
+    }
     default: {
       return dino.fact;
     }
@@ -87,7 +102,6 @@ function getComparisonFunction(num, dino, human) {
 
 // On button click, prepare and display infographic
 document.getElementById('btn').addEventListener('click', function () {
-  console.log('globalDinos', globalDinosObjs);
   const form = document.getElementById('dino-compare');
 
   // Remove form from screen
@@ -95,7 +109,6 @@ document.getElementById('btn').addEventListener('click', function () {
   const human = getHumanData();
   const randomizedDinos = _.shuffle(globalDinosObjs);
   randomizedDinos.splice(4, 0, human);
-  console.log('newDinos', randomizedDinos);
 
   // Generate Tiles for each Dino in Array
   randomizedDinos.forEach((dino) => {
@@ -111,7 +124,7 @@ document.getElementById('btn').addEventListener('click', function () {
         fact.innerHTML = dino.fact;
         gridItem.appendChild(fact);
       } else {
-        const num = Math.floor(Math.random() * 3);
+        const num = Math.floor(Math.random() * 6);
         let randomFact = getComparisonFunction(num, dino, human);
         let fact = document.createElement('p');
         fact.innerHTML = randomFact;
