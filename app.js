@@ -25,7 +25,6 @@ const getDinos = (async () => {
 // Create Human Object
 function Human(name, height, weight, diet) {
   this.species = 'Human';
-  this.fact = '';
   this.name = name;
   this.height = height;
   this.weight = weight;
@@ -48,21 +47,27 @@ const getHumanData = () => {
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 const compareWeight = (dino, human) => {
-  return `${human.name} weighs ${human.weight} and ${dino.species} weighs ${dino.weight}`;
+  return `${human.name} weighs ${human.weight} and ${dino.species} weighs ${dino.weight}.`;
 };
 
 // Create Dino Compare Method 2
 // NOTE: Height in JSON file.
 const compareHeight = (dino, human) => {
-  return `${human.name} is ${human.height} inches but ${dino.species} is ${dino.height} inches`;
+  return `${dino.species} is ${dino.height} inches but ${human.name} is ${human.height} inches.`;
 };
 
 // Create Dino Compare Method 3
 // NOTE: Diet in JSON file.
 const compareDiet = (dino, human) => {
-  return `${human.name} is a ${human.diet} while ${dino.species} is a ${dino.diet}`;
+  return `${human.name} is a ${human.diet} while ${dino.species} is a ${dino.diet}.`;
 };
 
+// Helper Function to Shuffle Dino Array
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+}
+
+// Helper Function to Get Random Comparison Function
 function getComparisonFunction(num, dino, human) {
   switch (num) {
     case 0: {
@@ -82,36 +87,43 @@ function getComparisonFunction(num, dino, human) {
 
 // On button click, prepare and display infographic
 document.getElementById('btn').addEventListener('click', function () {
+  console.log('globalDinos', globalDinosObjs);
   const form = document.getElementById('dino-compare');
 
   // Remove form from screen
   form.style.display = 'none';
-  getHumanData();
   const human = getHumanData();
-  globalDinosObjs.splice(4, 0, human);
+  const randomizedDinos = _.shuffle(globalDinosObjs);
+  randomizedDinos.splice(4, 0, human);
+  console.log('newDinos', randomizedDinos);
 
   // Generate Tiles for each Dino in Array
-  globalDinosObjs.forEach((dino) => {
-    let divContainer = document.createElement('div');
-    hoverState(divContainer);
-    divContainer.className = 'grid-item';
+  randomizedDinos.forEach((dino) => {
+    let gridItem = document.createElement('div');
+    gridItem.className = 'grid-item';
     let title = document.createElement('h6');
     title.textContent = dino.species;
     let image = document.createElement('img');
     image.src = `images/${dino.species}.png`;
     if (dino.species != 'Human') {
-      const num = Math.floor(Math.random() * 3);
-      let randomFact = getComparisonFunction(num, dino, human);
-      let fact = document.createElement('p');
-      fact.innerHTML = randomFact;
-      divContainer.appendChild(fact);
+      if (dino.species == 'Pigeon') {
+        let fact = document.createElement('p');
+        fact.innerHTML = dino.fact;
+        gridItem.appendChild(fact);
+      } else {
+        const num = Math.floor(Math.random() * 3);
+        let randomFact = getComparisonFunction(num, dino, human);
+        let fact = document.createElement('p');
+        fact.innerHTML = randomFact;
+        gridItem.appendChild(fact);
+      }
     }
-    divContainer.appendChild(title);
-    divContainer.appendChild(image);
-    let divFrag = document.createDocumentFragment();
-    divFrag.appendChild(divContainer);
+    gridItem.appendChild(title);
+    gridItem.appendChild(image);
+    let gridFrag = document.createDocumentFragment();
+    gridFrag.appendChild(gridItem);
 
     // Add tiles to DOM
-    document.querySelector('#grid').appendChild(divFrag);
+    document.querySelector('#grid').appendChild(gridFrag);
   });
 });
