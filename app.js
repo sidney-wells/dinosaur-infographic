@@ -53,19 +53,49 @@ const getHumanData = () => {
   return new Human(input[0], height, input[3], input[4]);
 };
 
+// Dino.prototype.weightCompare = function(){
+//   if (human.weight < this.weight + 20 && human.weight > this.weight - 20){
+//       return `Close match! They average ${this.weight} pounds. But you probably wouldn't want to wrestle.`;
+//   } else if (human.weight >= this.weight + 20){
+//       const weightDifference = Number.parseFloat(human.weight / this.weight).toPrecision(2);
+//       return `You're ${weightDifference} times larger than the ${this.species}. Still not a great pet idea.`;
+//   } else {
+//       const weightDifference = Number.parseFloat(this.weight/human.weight).toPrecision(2);
+//       return `The ${this.species} is ${weightDifference} times larger than you. Don't get in the way.`;
+//   }
+// }
+
 // Create Dino Compare Method 1 - Weight
 const compareWeight = (dino, human) => {
-  return `${human.name} weighs ${human.weight} lbs and ${dino.species} weighs ${dino.weight} lbs.`;
+  if (human.weight + 30 < dino.weight) {
+    return `Oh no, ${human.name} would get crushed by a ${dino.species} in sumowrestling.`;
+  } else if (human.weight - 20 > dino.weight) {
+    return `Maybe ${human.name} could take on a ${dino.species} in sumowrestling.`;
+  } else {
+    return `${human.name} and ${dino.species} weight similar so they should be friends.`;
+  }
 };
 
 // Create Dino Compare Method 2 - Height
 const compareHeight = (dino, human) => {
-  return `${dino.species} is ${dino.height} inches but ${human.name} is ${human.height} inches.`;
+  if (human.height + 8 < dino.height) {
+    return `Ooof, ${dino.species} towers over ${human.name}.`;
+  } else if (human.height - 20 > dino.height) {
+    return `Even thought ${human.name} is way taller, height isn't everything.`;
+  } else {
+    return `Hm, ${human.name} and ${dino.species} are similar heights, maybe friends?`;
+  }
 };
 
 // Create Dino Compare Method 3 - Diet
 const compareDiet = (dino, human) => {
-  return `${human.name} is a ${human.diet} while ${dino.species} is a ${dino.diet}.`;
+  if (human.diet == 'Omnivore' && dino.diet == 'omnivore') {
+    return `Oops, ${human.name} and ${dino.species} may want to eat each other.`;
+  } else if (dino.diet == 'carnivor' || dino.diet == 'omnivore') {
+    return `${human.name} should be careful. The ${dino.species} will want to eat him.`;
+  } else {
+    return `Even if ${dino.species} may not eat humans, ${human.name} should be careful.`;
+  }
 };
 
 // Helper Function to Shuffle Dino Array
@@ -126,6 +156,8 @@ document.getElementById('btn').addEventListener('click', function () {
       } else {
         const num = Math.floor(Math.random() * 6);
         let randomFact = getComparisonFunction(num, dino, human);
+        console.log('num', num);
+        console.log('fact', randomFact);
         let fact = document.createElement('p');
         fact.innerHTML = randomFact;
         gridItem.appendChild(fact);
