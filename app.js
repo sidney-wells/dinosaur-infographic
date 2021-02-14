@@ -42,28 +42,43 @@ function Human(name, height, weight, diet) {
 
 // Use IIFE to get human data from form
 const getHumanData = () => {
+  let valid = true;
   let formData = document.getElementById('dino-compare');
   let input = [];
-  for (let i = 0; i < formData.length; i++) {
-    input.push(formData.elements[i].value);
-  }
-  const feet = parseInt(input[1]);
-  const inches = parseInt(input[2]);
-  const height = feet * 12 + inches;
-  return new Human(input[0], height, input[3], input[4]);
-};
 
-// Dino.prototype.weightCompare = function(){
-//   if (human.weight < this.weight + 20 && human.weight > this.weight - 20){
-//       return `Close match! They average ${this.weight} pounds. But you probably wouldn't want to wrestle.`;
-//   } else if (human.weight >= this.weight + 20){
-//       const weightDifference = Number.parseFloat(human.weight / this.weight).toPrecision(2);
-//       return `You're ${weightDifference} times larger than the ${this.species}. Still not a great pet idea.`;
-//   } else {
-//       const weightDifference = Number.parseFloat(this.weight/human.weight).toPrecision(2);
-//       return `The ${this.species} is ${weightDifference} times larger than you. Don't get in the way.`;
-//   }
-// }
+  for (let i = 0; i < formData.length; i++) {
+    if (formData.elements[i].value === '') {
+      alert('Please do not leave values blank');
+      valid = false;
+      break;
+    } else {
+      input.push(formData.elements[i].value);
+    }
+  }
+
+  if (valid) {
+    const feet = parseInt(input[1]);
+    const inches = parseInt(input[2]);
+    const height = feet * 12 + inches;
+    const weight = parseInt(input[3]);
+
+    if (feet < 0) {
+      alert('Please input a feet value greater than 0.');
+      valid = false;
+    } else if ((feet === 0 && inches === 0) || inches < 0) {
+      alert('Please input an inches value greater than 0.');
+      valid = false;
+    } else if (height < 0) {
+      alert('Please input a height value greater than 0.');
+      valid = false;
+    } else if (weight < 0) {
+      alert('Please input a weight value greater than 0.');
+      valid = false;
+    } else {
+      return new Human(input[0], height, input[3], input[4]);
+    }
+  }
+};
 
 // Create Dino Compare Method 1 - Weight
 const compareWeight = (dino, human) => {
@@ -94,6 +109,8 @@ const compareDiet = (dino, human) => {
   } else if (dino.diet == 'carnivor' || dino.diet == 'omnivore') {
     return `${human.name} should be careful. The ${dino.species} will want to eat him.`;
   } else {
+    const form = document.getElementById('dino-compare');
+    form.style.display = 'none';
     return `Even if ${dino.species} may not eat humans, ${human.name} should be careful.`;
   }
 };
@@ -132,43 +149,59 @@ function getComparisonFunction(num, dino, human) {
 
 // On button click, prepare and display infographic
 document.getElementById('btn').addEventListener('click', function () {
-  const form = document.getElementById('dino-compare');
-
-  // Remove form from screen
-  form.style.display = 'none';
+  let formData = document.getElementById('dino-compare');
+  let grid = document.querySelector('#grid');
   const human = getHumanData();
-  const randomizedDinos = _.shuffle(globalDinosObjs);
-  randomizedDinos.splice(4, 0, human);
-
-  // Generate Tiles for each Dino in Array
-  randomizedDinos.forEach((dino) => {
-    let gridItem = document.createElement('div');
-    gridItem.className = 'grid-item';
-    let title = document.createElement('h6');
-    title.textContent = dino.species;
-    let image = document.createElement('img');
-    image.src = `images/${dino.species}.png`;
-    if (dino.species != 'Human') {
-      if (dino.species == 'Pigeon') {
-        let fact = document.createElement('p');
-        fact.innerHTML = dino.fact;
-        gridItem.appendChild(fact);
-      } else {
-        const num = Math.floor(Math.random() * 6);
-        let randomFact = getComparisonFunction(num, dino, human);
-        console.log('num', num);
-        console.log('fact', randomFact);
-        let fact = document.createElement('p');
-        fact.innerHTML = randomFact;
-        gridItem.appendChild(fact);
+  if (human) {
+    const form = document.getElementById('dino-compare');
+    form.style.display = 'none';
+    grid.style.display = 'flex';
+    const randomizedDinos = _.shuffle(globalDinosObjs);
+    randomizedDinos.splice(4, 0, human);
+    // Generate Tiles for each Dino in Array
+    randomizedDinos.forEach((dino) => {
+      let gridItem = document.createElement('div');
+      gridItem.className = 'grid-item';
+      let title = document.createElement('h6');
+      title.textContent = dino.species;
+      let image = document.createElement('img');
+      image.src = `images/${dino.species}.png`;
+      if (dino.species != 'Human') {
+        if (dino.species == 'Pigeon') {
+          let fact = document.createElement('p');
+          fact.innerHTML = dino.fact;
+          gridItem.appendChild(fact);
+        } else {
+          const num = Math.floor(Math.random() * 6);
+          let randomFact = getComparisonFunction(num, dino, human);
+          let fact = document.createElement('p');
+          fact.innerHTML = randomFact;
+          gridItem.appendChild(fact);
+        }
       }
-    }
-    gridItem.appendChild(title);
-    gridItem.appendChild(image);
-    let gridFrag = document.createDocumentFragment();
-    gridFrag.appendChild(gridItem);
-
-    // Add tiles to DOM
-    document.querySelector('#grid').appendChild(gridFrag);
-  });
+      gridItem.appendChild(title);
+      gridItem.appendChild(image);
+      let gridFrag = document.createDocumentFragment();
+      gridFrag.appendChild(gridItem);
+      document.querySelector('#grid').appendChild(gridFrag);
+    });
+    // reset button
+    let button = document.createElement('button');
+    button.textContent = 'Reset Form';
+    button.style.fontSize = '100px';
+    button.style.marginBottom = '48px';
+    button.addEventListener('click', function () {
+      const grid = document.querySelector('#grid');
+      while (grid.firstChild) {
+        grid.removeChild(grid.firstChild);
+      }
+      grid.style.display = 'none';
+      form.style.display = 'block';
+      button.style.display = 'none';
+      for (let i = 0; i < formData.length - 1; i++) {
+        formData[i].value = '';
+      }
+    });
+    document.querySelector('#footer').appendChild(button);
+  }
 });

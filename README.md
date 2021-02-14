@@ -1,3 +1,7 @@
+# Overview
+
+This was a Udacity Intermediate Javascript Nanodegree project that was reviewed and passed their program's requirements. Enjoy as you please! 
+
 # Object Oriented Javascript 
 
 ## Student Instructions
