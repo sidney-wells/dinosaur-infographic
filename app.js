@@ -1,3 +1,5 @@
+const S3_BUCKET = `https://dinosaur-images.s3.us-east-2.amazonaws.com`;
+
 // Create Dino Constructor
 function Dino(species, weight, height, diet, where, when, fact) {
   this.species = species;
@@ -165,7 +167,7 @@ document.getElementById('btn').addEventListener('click', function () {
       let title = document.createElement('h6');
       title.textContent = dino.species;
       let image = document.createElement('img');
-      image.src = `images/${dino.species}.png`;
+      image.src = `${S3_BUCKET}/${dino.species.toLowerCase()}.png`;
       if (dino.species != 'Human') {
         if (dino.species == 'Pigeon') {
           let fact = document.createElement('p');
