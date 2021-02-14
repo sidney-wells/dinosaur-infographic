@@ -1,4 +1,4 @@
-const S3_BUCKET = `https://dinosaur-images.s3.us-east-2.amazonaws.com`;
+const S3_BUCKET = 'https://dinosaur-images.s3.us-east-2.amazonaws.com';
 
 // Create Dino Constructor
 function Dino(species, weight, height, diet, where, when, fact) {
