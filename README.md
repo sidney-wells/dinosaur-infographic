@@ -1,6 +1,8 @@
 # Overview
 
-This was a Udacity Intermediate Javascript Nanodegree project that was reviewed and passed their program's requirements. Enjoy as you please! 
+This was a Udacity Intermediate Javascript Nanodegree project that was reviewed and passed their program's requirements. 
+
+Check out this site live at this url: https://dinographic.herokuapp.com/
 
 # Object Oriented Javascript 
 
