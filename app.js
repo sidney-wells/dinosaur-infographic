@@ -1,3 +1,4 @@
+// Storage for dinosaur grid images
 const S3_BUCKET = 'https://dinosaur-images.s3.us-east-2.amazonaws.com';
 
 // Create Dino Constructor
@@ -77,7 +78,7 @@ const getHumanData = () => {
       alert('Please input a weight value greater than 0.');
       valid = false;
     } else {
-      return new Human(input[0], height, input[3], input[4]);
+      return new Human(input[0], height, weight, input[4]);
     }
   }
 };
@@ -149,7 +150,61 @@ function getComparisonFunction(num, dino, human) {
   }
 }
 
-// On button click, prepare and display infographic
+// Helper Function to Create Tooltip
+const createToolTip = (fact, span, dino, randomFact) => {
+  let result = {};
+  fact.addEventListener('mouseover', function () {
+    span.style.visibility = 'visible';
+  });
+  fact.addEventListener('mouseout', function () {
+    span.style.visibility = 'hidden';
+  });
+  span.className = 'tooltiptext';
+  let species = document.createElement('span');
+  let weight = document.createElement('span');
+  let height = document.createElement('span');
+  let diet = document.createElement('span');
+  let where = document.createElement('span');
+  let when = document.createElement('span');
+  species.innerHTML = `Species: ${dino.species}`;
+  weight.innerHTML = `<br> Weight: ${dino.weight} lbs`;
+  height.innerHTML = `<br> Height: ${dino.height} inches`;
+  diet.innerHTML = `<br> Diet: ${dino.diet}`;
+  where.innerHTML = `<br> Where: ${dino.where}`;
+  when.innerHTML = `<br> When: ${dino.when}`;
+  span.appendChild(species);
+  span.appendChild(weight);
+  span.appendChild(height);
+  span.appendChild(diet);
+  span.appendChild(where);
+  span.appendChild(when);
+  fact.innerHTML = randomFact ? randomFact : dino.fact;
+  result = { fact: fact, span: span };
+  return result;
+};
+
+// Helper Function to Create Reset Button
+const createResetButton = (button, formData, form) => {
+  let result;
+  button.id = 'resetBtn';
+  button.textContent = 'Reset Form';
+  button.addEventListener('click', function () {
+    const grid = document.querySelector('#grid');
+    while (grid.firstChild) {
+      grid.removeChild(grid.firstChild);
+    }
+    grid.style.display = 'none';
+    form.style.display = 'block';
+    button.style.display = 'none';
+    for (let i = 0; i < formData.length - 1; i++) {
+      formData[i].value = '';
+    }
+  });
+  result = button;
+  return result;
+};
+
+// Display infographic and remove form
 document.getElementById('btn').addEventListener('click', function () {
   let formData = document.getElementById('dino-compare');
   let grid = document.querySelector('#grid');
@@ -160,25 +215,34 @@ document.getElementById('btn').addEventListener('click', function () {
     grid.style.display = 'flex';
     const randomizedDinos = _.shuffle(globalDinosObjs);
     randomizedDinos.splice(4, 0, human);
-    // Generate Tiles for each Dino in Array
-    randomizedDinos.forEach((dino) => {
+    randomizedDinos.forEach((dino, i) => {
       let gridItem = document.createElement('div');
       gridItem.className = 'grid-item';
-      let title = document.createElement('h6');
+      let title = document.createElement('h4');
       title.textContent = dino.species;
       let image = document.createElement('img');
-      image.src = `${S3_BUCKET}/${dino.species.toLowerCase()}.png`;
+      if (dino.species === 'Tyrannosaurus Rex') {
+        image.src = `${S3_BUCKET}/${'TyrannosaurusRex'.toLowerCase()}.png`;
+      } else {
+        image.src = `${S3_BUCKET}/${dino.species.toLowerCase()}.png`;
+      }
       if (dino.species != 'Human') {
         if (dino.species == 'Pigeon') {
           let fact = document.createElement('p');
-          fact.innerHTML = dino.fact;
-          gridItem.appendChild(fact);
+          fact.className = 'tooltip';
+          let span = document.createElement('div');
+          const result = createToolTip(fact, span, dino);
+          gridItem.appendChild(result.fact);
+          gridItem.appendChild(result.span);
         } else {
           const num = Math.floor(Math.random() * 6);
           let randomFact = getComparisonFunction(num, dino, human);
           let fact = document.createElement('p');
-          fact.innerHTML = randomFact;
-          gridItem.appendChild(fact);
+          fact.className = 'tooltip';
+          let span = document.createElement('div');
+          const result = createToolTip(fact, span, dino, randomFact);
+          gridItem.appendChild(result.fact);
+          gridItem.appendChild(result.span);
         }
       }
       gridItem.appendChild(title);
@@ -187,23 +251,8 @@ document.getElementById('btn').addEventListener('click', function () {
       gridFrag.appendChild(gridItem);
       document.querySelector('#grid').appendChild(gridFrag);
     });
-    // reset button
     let button = document.createElement('button');
-    button.textContent = 'Reset Form';
-    button.style.fontSize = '100px';
-    button.style.marginBottom = '48px';
-    button.addEventListener('click', function () {
-      const grid = document.querySelector('#grid');
-      while (grid.firstChild) {
-        grid.removeChild(grid.firstChild);
-      }
-      grid.style.display = 'none';
-      form.style.display = 'block';
-      button.style.display = 'none';
-      for (let i = 0; i < formData.length - 1; i++) {
-        formData[i].value = '';
-      }
-    });
-    document.querySelector('#footer').appendChild(button);
+    const result = createResetButton(button, formData, form);
+    document.querySelector('#footer').appendChild(result);
   }
 });

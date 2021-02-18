@@ -1,4 +1,28 @@
-/* General Styles */
+#grid div {
+  width: calc(100% / 3);
+}
+
+.tooltiptext {
+  left: 20px;
+  width: unset;
+  visibility: hidden;
+  top: 140px;
+  font-size: 14px;
+  background-color: black;
+  color: #fff;
+  text-align: left;
+  border-radius: 10px;
+  padding: 20px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 body {
   background: rgb(111, 208, 224);
   background: linear-gradient(
@@ -23,16 +47,8 @@ h3 {
   font-family: 'Oswald', sans-serif;
 }
 
-@media (min-width: 650px) {
-  h1 {
-    font-size: 10px;
-  }
-}
-
-@media (min-width: 920px) {
-  h1 {
-    font-size: 10px;
-  }
+h4 {
+  font-size: 40px;
 }
 
 p {
@@ -40,7 +56,6 @@ p {
   font-size: 10px;
 }
 
-/* Grid Styles */
 #grid {
   background: #fff url(images/tracks.png) no-repeat;
   background-size: cover;
@@ -97,16 +112,12 @@ p {
   background: #677bcbfa;
 }
 
-button {
+#resetBtn {
   border-radius: 5%;
+  font-size: 100px;
+  margin-bottom: 48px;
   background-color: lightblue;
   color: purple;
-}
-
-@media (min-width: 550px) {
-  #grid div {
-    width: calc(100% / 3);
-  }
 }
 
 .grid-item h6 {
@@ -125,12 +136,11 @@ button {
   bottom: 0;
   padding: 0.8em 0.8em 1.8em;
   margin: 0;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
   color: #fff;
 }
 
-/* Form Styles */
 .form-container {
   background: #eee;
   padding: 1.3em;
@@ -185,4 +195,176 @@ select {
 .fine-print {
   display: block;
   font-size: 10px;
+}
+
+@media (max-width: 1220px) {
+  #grid {
+    background: #fff url(images/tracks.png) no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+  #grid div {
+    width: calc(100% / 2);
+  }
+
+  .tooltiptext {
+    left: 20px;
+    width: unset;
+    visibility: hidden;
+    top: 140px;
+    font-size: 12px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 10px;
+    padding: 20px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  
+
+  .grid-item {
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    font-size: 10px;
+    min-height: 500px;
+    flex: 0 49%;
+    position: relative;
+    bottom: 0;
+  }
+  .grid-item:nth-child(1) {
+    background: #009687f5;
+  }
+
+  .grid-item:nth-child(2) {
+    background: #dc7657f5;
+  }
+
+  .grid-item:nth-child(3) {
+    background: #4bb3c1fa;
+  }
+
+  .grid-item:nth-child(4) {
+    background: #fac069f9;
+  }
+
+  .grid-item:nth-child(5) {
+    background: #67a866f9;
+  }
+
+  .grid-item:nth-child(6) {
+    background: #b94169fa;
+  }
+
+  .grid-item:nth-child(7) {
+    background: #7f62b3fa;
+  }
+
+  .grid-item:nth-child(8) {
+    background: #9fc376f9;
+  }
+
+  .grid-item:nth-child(9) {
+    background: #677bcbfa;
+  }
+
+  #resetBtn {
+    border-radius: 5%;
+    font-size: 60px;
+    margin-bottom: 48px;
+    background-color: lightblue;
+    color: purple;
+  }
+}
+
+@media (max-width: 576px) {
+  #grid {
+    background: #fff url(images/tracks.png) no-repeat;
+    background-size: cover;
+    display: block;
+    flex-wrap: none;
+    justify-content: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+  #grid .grid-item {
+    width: 100%;
+  }
+
+  .tooltiptext {
+    left: 20px;
+    width: 100px;
+    visibility: hidden;
+    top: 140px;
+    font-size: 12px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 10px;
+    padding: 20px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    font-size: 10px;
+    min-height: 500px;
+    flex: unset;
+    position: relative;
+    bottom: 0;
+  }
+  .grid-item:nth-child(1) {
+    background: #009687f5;
+  }
+
+  .grid-item:nth-child(2) {
+    background: #dc7657f5;
+  }
+
+  .grid-item:nth-child(3) {
+    background: #4bb3c1fa;
+  }
+
+  .grid-item:nth-child(4) {
+    background: #fac069f9;
+  }
+
+  .grid-item:nth-child(5) {
+    background: #67a866f9;
+  }
+
+  .grid-item:nth-child(6) {
+    background: #b94169fa;
+  }
+
+  .grid-item:nth-child(7) {
+    background: #7f62b3fa;
+  }
+
+  .grid-item:nth-child(8) {
+    background: #9fc376f9;
+  }
+
+  .grid-item:nth-child(9) {
+    background: #677bcbfa;
+  }
+
+  #resetBtn {
+    border-radius: 5%;
+    font-size: 40px;
+    margin-bottom: 48px;
+    background-color: lightblue;
+    color: purple;
+  }
 }
